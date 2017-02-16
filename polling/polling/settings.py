@@ -73,11 +73,23 @@ WSGI_APPLICATION = 'polling.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
+import mongoengine
+
 DATABASES = {
     'default': {
         'ENGINE': '',
     }
 }
+
+mongoengine.connect(
+    db='polling',
+    username='admin',
+    password='admin'
+)
+
+AUTHENTICATION_BACKENDS = (
+    'mongoengine.django.auth.MongoEngineBackend',
+)
 
 
 # Password validation
