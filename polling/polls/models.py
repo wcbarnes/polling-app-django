@@ -14,6 +14,7 @@ class Poll(Document):
     question = StringField(max_length=200)
     pub_date = DateTimeField(help_text='date published')
     choices = ListField(EmbeddedDocumentField(Choice))
+    uid = SequenceField()
 
     meta = {
         'indexes': [
