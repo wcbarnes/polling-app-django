@@ -7,6 +7,7 @@ from mongoengine import *
 class Choice(EmbeddedDocument):
     choice_text = StringField(max_length=200)
     votes = IntField(default=0)
+    uid = SequenceField()
     def __str__(self):
         return self.choice_text
 
