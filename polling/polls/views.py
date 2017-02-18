@@ -21,9 +21,33 @@ def detail(request, question_id):
     return render(request, 'polls/detail.html', {'question': question})
 
 def results(request, question_id):
-    response = "You're looking at the results of question %s."
-    return HttpResponse(response % question_id)
+    try:
+        question = Poll.objects.get(uid=question_id)
+    except Poll.DoesNotExist:
+        raise Http404("Question does not exist")
+    return render(request, 'polls/results.html', {'question': question})
 
 def vote(request, question_id):
-    return HttpResponse("You're voting on question %s." % question_id)
+    try:
+        question = Poll.objects.get(uid=question_id)
+    except Poll.DoesNotExist:
+        raise Http404("Question does not exist")
+    try:
+        selected_choice = question.choices
+        for choice in question.choices:
+            if choice.uid == int(request.POST['choice']):
+                selected_choice = choice
+    except (KeyError):
+        # Redisplay the question voting form.
+        return render(request, 'polls/detail.html', {
+            'question': question,
+            'error_message': "You didn't select a choice.",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+        return HttpResponseRedirect(reverse('polls:results', args=(question.uid,)))
 
