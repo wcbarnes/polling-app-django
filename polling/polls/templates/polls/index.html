@@ -4,6 +4,20 @@
         <li><a href="{% url 'polls:detail' question.uid %}">{{ question.question }}</a></li>
     {% endfor %}
     </ul>
+    <form method="post">
+    {% csrf_token %}
+      <label for="form-question">Question: </label>
+      <input type="text" name="question" id="form-question"/><br />
+      <label for="answer1">A: </label>
+      <input type="text" name="answer1" id="answer1"/><br />
+      <label for="answer2">B: </label>
+      <input type="text" name="answer2" id="answer2"/><br />
+      <label for="answer3">C: </label>
+      <input type="text" name="answer3" id="answer3"/><br />
+      <label for="answer4">D: </label>
+      <input type="text" name="answer4" id="answer4"/><br />
+      <input type="submit" value="Create a question!" />
+    </form>
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
